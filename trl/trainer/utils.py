@@ -94,7 +94,7 @@ class DataCollatorForCompletionOnlyLM(DataCollatorForLanguageModeling):
 
             for idx in np.where(batch["labels"][i] == response_token_ids[0])[0]:
                 # `response_token_ids` is `'### Response:\n'`, here we are just making sure that the token IDs match
-                if response_token_ids == examples[i]["input_ids"][idx : idx + len(response_token_ids)]:
+                if torch.equal(torch.tensor(response_token_ids), batch["input_ids"][i][idx : idx + len(response_token_ids)]):
                     response_token_ids_start_idx = idx
 
             if response_token_ids_start_idx is None:
